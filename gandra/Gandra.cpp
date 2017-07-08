@@ -370,7 +370,7 @@ void deal_cards(const vector<Card*>& deck, const vector<Player*>& players) {
 	for (unsigned int i = 0; i < players.size(); ++i) {
 		while (next_card < 3 * (i + 1)) {
 			if (next_card < 0 || next_card >= deck.size())
-				error("Unable to deal card: Out Of Range");
+				error("Unable to deal card [1]: Out Of Range");
 			deck[next_card++]->add_card(players[i]);
 		}		
 	}
@@ -383,7 +383,7 @@ void deal_cards(const vector<Card*>& deck, unsigned int& deck_index, const vecto
 			if (player_index == players.size())
 				player_index = 0;
 			if (deck_index < 0 || deck_index >= deck.size())
-				error("Unable to deal card: Out Of Range");
+				error("Unable to deal card [2]: Out Of Range");
 			deck[deck_index++]->add_card(players[player_index++]);
 		}
 	}
@@ -558,7 +558,7 @@ void send_card(SOCKET socket, char* card_name) {
 
 	isendResult = send(socket, sendbuf, DEFAULT_BUFLEN, 0);
 	if (isendResult == SOCKET_ERROR) {
-		error("Unable to send upcard card.");
+		error("Unable to send card.");
 		WSACleanup();
 	}
 }
@@ -604,7 +604,7 @@ void send_cards(SOCKET socket, const vector<Card*>& cards) {
 
 	unsigned int isendResult = send(socket, sendbuf, DEFAULT_BUFLEN, 0);
 	if (isendResult == SOCKET_ERROR) {
-		error("Unable to send cards.");
+		error("Unable to send cards [1].");
 		WSACleanup();
 	}
 }
@@ -629,7 +629,7 @@ void send_cards(SOCKET socket, const vector<Card*>& cards, Card::Suit suit) {
 
 	unsigned int isendResult = send(socket, sendbuf, DEFAULT_BUFLEN, 0);
 	if (isendResult == SOCKET_ERROR) {
-		error("Unable to send cards.");
+		error("Unable to send cards [2].");
 		WSACleanup();
 	}
 }
@@ -640,7 +640,7 @@ void display_cards(SOCKET socket, unsigned int player_number, unsigned int turn)
 
 	irecvResult = recv(socket, recvbuf, DEFAULT_BUFLEN, MSG_WAITALL);
 	if (irecvResult == SOCKET_ERROR) {
-		error("Unable to display cards.");
+		error("Unable to recieve cards.");
 		WSACleanup();
 	}
 
@@ -693,7 +693,7 @@ void display_round_results(SOCKET socket) {
 
 	irecvResult = recv(socket, recvbuf, DEFAULT_BUFLEN, MSG_WAITALL);
 	if (irecvResult == SOCKET_ERROR) {
-		error("Unable to display round results.");
+		error("Unable to recieve round results.");
 		WSACleanup();
 	}
 
@@ -794,7 +794,7 @@ void display_hand(SOCKET socket) {
 
 	irecvResult = recv(socket, recvbuf, DEFAULT_BUFLEN, MSG_WAITALL);
 	if (irecvResult == SOCKET_ERROR) {
-		error("Unable to display hand.");
+		error("Unable to recieve hand.");
 		WSACleanup();
 	}
 

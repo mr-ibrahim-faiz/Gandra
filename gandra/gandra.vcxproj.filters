@@ -27,11 +27,11 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Player.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Card.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -39,6 +39,12 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Gandra.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">

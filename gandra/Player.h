@@ -1,3 +1,5 @@
+#pragma once
+
 #include<vector>
 using std::vector;
 
@@ -14,7 +16,6 @@ public:
 	void claim_cards(Card*);
 private:
 	unsigned int player_number;
-	//unsigned int score;
 	vector<Card*> hand;
 
 	void update_hand();

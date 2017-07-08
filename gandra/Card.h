@@ -1,3 +1,5 @@
+#pragma once
+
 #include<vector>
 using std::vector;
 
@@ -44,4 +46,3 @@ private:
 	friend ostream& operator<<(ostream&, const Card&);
 	friend class Player;
 };
-

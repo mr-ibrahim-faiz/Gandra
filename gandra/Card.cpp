@@ -45,6 +45,9 @@ void Card::add_card(Player* player) {
 }
 
 vector<Card*> Card::create_deck() {
+	//Reinitialize player numbers (useful for replay)
+	Player::next_player = 1; 
+
 	vector<Card*> deck;
 	for(int i = 0; i < 4; ++i)
 		for (int j = 0; j < 9; ++j) {

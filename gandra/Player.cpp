@@ -36,7 +36,6 @@ Card* Player::play_card(const unsigned int hand_index) {
 	return card;
 }
 
-
 void Player::claim_cards(Card* card) {
 	if (card->is_in_hand == false && card->is_played == true)
 		card->player_number = player_number;

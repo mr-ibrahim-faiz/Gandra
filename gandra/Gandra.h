@@ -23,6 +23,8 @@ Card::Suit get_privileged_suit(const unsigned int, const vector<Card*>&);
 void deal_cards(const vector<Card*>&, const vector<Player*>&);
 void deal_cards(const vector<Card*>&, unsigned int&, const vector<Player*>, const unsigned int);
 
+void display_cards_left(unsigned int, unsigned int);
+
 void display_card(Card*, Card::Suit, unsigned int, unsigned int);
 void display_cards(const vector<Card*>&, Card::Suit); 
 void display_cards(const vector<Card*>&, Card::Suit, unsigned int, unsigned int);

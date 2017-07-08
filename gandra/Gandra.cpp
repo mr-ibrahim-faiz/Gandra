@@ -46,6 +46,10 @@ void gandrac_same_screen() {
 
 	while (!is_finished) {
 		display_round(round++);
+
+		//display the number of cards left in deck
+		display_cards_left(round - 1, number_of_players);
+
 		vector<Card*> round_cards;
 
 		for (unsigned int i = 0; i < number_of_players; ++i) {
@@ -132,6 +136,10 @@ void gandrac_network() {
 
 			while (!is_finished) {
 				display_round(round++);
+
+				//display the number of cards left in deck
+				display_cards_left(round - 1, number_of_players);
+
 				vector<Card*> round_cards;
 
 				for (unsigned int i = 0; i < number_of_players; ++i) {
@@ -239,6 +247,9 @@ void gandrac_network() {
 
 			while (!is_finished) {
 				display_round(round++);
+
+				//display the number of cards left in deck
+				display_cards_left(round - 1, number_of_players);
 
 				for (unsigned int i = 0; i < number_of_players; ++i) {
 					unsigned int player_number = eldest++;
@@ -387,6 +398,11 @@ void deal_cards(const vector<Card*>& deck, unsigned int& deck_index, const vecto
 			deck[deck_index++]->add_card(players[player_index++]);
 		}
 	}
+}
+
+void display_cards_left(unsigned int round, unsigned int number_of_players) {
+	if (round == 36/number_of_players - 3)
+		cout << "\nOnly " << number_of_players << " cards left." << endl;
 }
 
 void display_card(Card* card, Card::Suit suit, unsigned int player_number, unsigned int turn) {

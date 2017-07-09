@@ -87,7 +87,7 @@ void gandrac_same_screen() {
 
 		//Identify the eldest player for the next round
 		eldest = winner_card->get_player_number();
-		deal_cards(deck, next_card, players, eldest); //Comment to ease testing
+		deal_cards(deck, next_card, players, eldest); //Comment this to ease testing
 
 	}
 
@@ -109,191 +109,44 @@ void gandrac_network() {
 		{
 			cout << "\nWaiting for a friend..." << endl;
 			SOCKET ClientSocket = server();
-
-			//Fix number of players
-			unsigned int number_of_players = 2;
-
-			//Create players
-			vector<Player*> players = create_players(number_of_players);
-
-			//Create a shuffle deck of cards
-			vector<Card*> deck = create_deck(number_of_players);
-
-			//Get privileged suit
-			Card::Suit privileged_suit = get_privileged_suit(number_of_players, deck);
-
-			//Deal cards to players
-			deal_cards(deck, players);
-
-			//Display visible card
-			char* upcard = display_upcard(number_of_players, deck);
-			send_card(ClientSocket, upcard);
-
-			unsigned int round{ 1 };
-			unsigned int eldest{ 1 };
-			unsigned int next_card{ 3 * number_of_players + 1 };
-			bool is_finished{ false };
-
-			while (!is_finished) {
-				display_round(round++);
-
-				//display the number of cards left in deck
-				display_cards_left(round - 1, number_of_players);
-
-				vector<Card*> round_cards;
-
-				for (unsigned int i = 0; i < number_of_players; ++i) {
-
-					Player* player = players[eldest++ - 1];
-					unsigned int player_number = player->get_player_number();
-					vector<Card*>& hand = player->get_hand();
-
-					//wait for friend message
-					if (player_number == 2 && i == 0)
-						cout << "\nWaiting for friend...\n" << endl;
-
-					//send hand size
-					send_hand_size(ClientSocket, hand.size());
-
-					if (player_number == 1) {
-						if (i == 0)
-							cout << endl;
-						display_hand(hand);
-					}
-
-					//send player 2's hand
-					if (player_number == 2)
-						send_cards(ClientSocket, hand);
-
-					if (hand.size() > 0) {
-						unsigned int choice;
-						if (player_number == 1)
-							choice = ask_choice(hand.size());
-						else if (player_number == 2)
-							choice = recieve_choice(ClientSocket);
-						Card* played_card = player->play_card(choice - 1);
-						round_cards.push_back(played_card);
-
-						//send cards
-						send_cards(ClientSocket, round_cards, privileged_suit);
-
-						if (player_number == 1 && i == 0)
-							cout << endl;
-
-						if (player_number == 1 && i == 1)
-							display_cards(round_cards, privileged_suit, player_number, i);
-						else
-							display_card(played_card, privileged_suit, player_number, i);
-
-					}
-
-					if (eldest > number_of_players)
-						eldest = 1;
-
-					if (i == number_of_players - 1 && hand.size() == 0)
-						is_finished = true;
-				}
-
-				Card* winner_card = round_winner_card(round_cards, privileged_suit);
-				display_winner_card(winner_card);
-				display_round_winner(winner_card);
-
-				//send round results
-				send_round_results(ClientSocket, winner_card);
-
-				unsigned int winner_number = winner_card->get_player_number();
-				Player* round_winner = players[winner_number - 1];
-
-				for (Card* card : round_cards)
-					round_winner->claim_cards(card);
-
-				//Identify the eldest player for the next round
-				eldest = winner_card->get_player_number();
-				deal_cards(deck, next_card, players, eldest);
+			
+			char retry {'y'};
+			while (retry == 'y') {
+				srand((unsigned int)time(NULL));
+				unsigned int player_number = rand() % 2 + 1;
 
 				//send eldest
-				send_eldest(ClientSocket, eldest);
+				send_eldest(ClientSocket, player_number);
+
+				ntwk_plyr(ClientSocket, player_number);
+
+				retry = ask_retry();
 			}
 
-			vector<unsigned int> scores = get_scores(players, deck);
-			display_final_scores(scores);
-			display_game_winner(scores);
-
-			//send final scores
-			send_final_scores(ClientSocket, scores);
-
-			shutdown(ClientSocket, SD_SEND);
+			shutdown(ClientSocket, SD_BOTH); //REVIEW THIS (Do I want to close the connection here?)
 		}
 		break;
 
 		case '2':
 		{
-			string ip_address{ "" };
+			string ip_address {""};
 			cout << "\nPlease enter an IP address: " << endl;
 			cin >> ip_address;
 
 			SOCKET ConnectSocket = client(ip_address);
 
-			//Fix number of players
-			unsigned int number_of_players = 2;
-
-			//Recieve and display upcard
-			display_upcard(ConnectSocket);
-
-			unsigned int round{ 1 };
-			unsigned int eldest{ 1 };
-
-			bool is_finished{ false };
-
-			while (!is_finished) {
-				display_round(round++);
-
-				//display the number of cards left in deck
-				display_cards_left(round - 1, number_of_players);
-
-				for (unsigned int i = 0; i < number_of_players; ++i) {
-					unsigned int player_number = eldest++;
-
-					//recieve hand size
-					unsigned int hand_size = recieve_hand_size(ConnectSocket);
-
-					//wait for friend message
-					if (player_number == 1 && i == 0)
-						cout << "\nWaiting for friend...\n" << endl;
-
-					if (player_number == 2) {
-						cout << endl;
-						display_hand(ConnectSocket);
-					}
-
-
-					if (hand_size > 0) {
-						if (player_number == 2) {
-							send_choice(ConnectSocket, hand_size);
-							if (i == 1)
-								cout << endl;
-						}
-
-						//display_cards
-						display_cards(ConnectSocket, player_number, i);
-					}
-
-					if (eldest > number_of_players)
-						eldest = 1;
-
-					if (i == number_of_players - 1 && hand_size == 1)
-						is_finished = true;
-				}
-
-				//display round results
-				display_round_results(ConnectSocket);
-
+			char retry {'y'};
+			while (retry == 'y') {
 				//recieve eldest
-				eldest = recieve_eldest(ConnectSocket);
-			}
+				unsigned int player_number = recieve_eldest(ConnectSocket);
 
-			//recieve final scores
-			display_final_scores(ConnectSocket);
+				if (player_number == 1)
+					ntwk_plyr(ConnectSocket, 2);
+				else
+					ntwk_plyr(ConnectSocket, 1);
+
+				retry = ask_retry();
+			}
 		}
 		break;
 
@@ -310,6 +163,220 @@ void gandrac_network() {
 		display_ntwk_menu();
 	}
 	
+}
+
+void ntwk_plyr(SOCKET socket, unsigned int player_number) {
+
+	switch (player_number) {
+	case 1:
+	{
+
+		//Fix number of players
+		unsigned int number_of_players = 2;
+
+		//Create players
+		vector<Player*> players = create_players(number_of_players);
+
+		//Create a shuffle deck of cards
+		vector<Card*> deck = create_deck(number_of_players);
+
+		//Get privileged suit
+		Card::Suit privileged_suit = get_privileged_suit(number_of_players, deck);
+
+		//Deal cards to players
+		deal_cards(deck, players);
+
+		//Display visible card
+		char* upcard = display_upcard(number_of_players, deck);
+		send_card(socket, upcard);
+
+		unsigned int round {1};
+		unsigned int eldest {1};
+		unsigned int next_card { 3 * number_of_players + 1 };
+		bool is_finished {false};
+
+		while (!is_finished) {
+			display_round(round++);
+
+			//display the number of cards left in deck
+			display_cards_left(round - 1, number_of_players);
+
+			vector<Card*> round_cards;
+
+			for (unsigned int i = 0; i < number_of_players; ++i) {
+
+				Player* player = players[eldest++ - 1];
+				unsigned int player_number = player->get_player_number();
+				vector<Card*>& hand = player->get_hand();
+
+				//wait for friend message
+				if (player_number == 2 && i == 0)
+					cout << "\nWaiting for friend...\n" << endl;
+
+				//send hand size
+				send_hand_size(socket, hand.size());
+
+				if (player_number == 1) {
+					if (i == 0)
+						cout << endl;
+					display_hand(hand);
+				}
+
+				//send player 2's hand
+				if (player_number == 2)
+					send_cards(socket, hand);
+
+				if (hand.size() > 0) {
+					unsigned int choice;
+					if (player_number == 1)
+						choice = ask_choice(hand.size());
+					else if (player_number == 2)
+						choice = recieve_choice(socket);
+					Card* played_card = player->play_card(choice - 1);
+					round_cards.push_back(played_card);
+
+					//send cards
+					send_cards(socket, round_cards, privileged_suit);
+
+					if (player_number == 1 && i == 0)
+						cout << endl;
+
+					if (player_number == 1 && i == 1)
+						display_cards(round_cards, privileged_suit, player_number, i);
+					else
+						display_card(played_card, privileged_suit, player_number, i);
+
+				}
+
+				if (eldest > number_of_players)
+					eldest = 1;
+
+				if (i == number_of_players - 1 && hand.size() == 0)
+					is_finished = true;
+			}
+
+			Card* winner_card = round_winner_card(round_cards, privileged_suit);
+			display_winner_card(winner_card);
+			display_round_winner(winner_card);
+
+			//send round results
+			send_round_results(socket, winner_card);
+
+			unsigned int winner_number = winner_card->get_player_number();
+			Player* round_winner = players[winner_number - 1];
+
+			for (Card* card : round_cards)
+				round_winner->claim_cards(card);
+
+			//Identify the eldest player for the next round
+			eldest = winner_card->get_player_number();
+			deal_cards(deck, next_card, players, eldest);
+
+			//send eldest
+			send_eldest(socket, eldest);
+		}
+
+		vector<unsigned int> scores = get_scores(players, deck);
+		display_final_scores(scores);
+		display_game_winner(scores);
+
+		//send final scores
+		send_final_scores(socket, scores);
+	}
+	break;
+
+	case 2:
+	{
+
+		//Fix number of players
+		unsigned int number_of_players = 2;
+
+		//Recieve and display upcard
+		display_upcard(socket);
+
+		unsigned int round {1};
+		unsigned int eldest {1};
+
+		bool is_finished {false};
+
+		while (!is_finished) {
+			display_round(round++);
+
+			//display the number of cards left in deck
+			display_cards_left(round - 1, number_of_players);
+
+			for (unsigned int i = 0; i < number_of_players; ++i) {
+				unsigned int player_number = eldest++;
+
+				//recieve hand size
+				unsigned int hand_size = recieve_hand_size(socket);
+
+				//wait for friend message
+				if (player_number == 1 && i == 0)
+					cout << "\nWaiting for friend...\n" << endl;
+
+				if (player_number == 2) {
+					cout << endl;
+					display_hand(socket);
+				}
+
+
+				if (hand_size > 0) {
+					if (player_number == 2) {
+						send_choice(socket, hand_size);
+						if (i == 1)
+							cout << endl;
+					}
+
+					//display_cards
+					display_cards(socket, player_number, i);
+				}
+
+				if (eldest > number_of_players)
+					eldest = 1;
+
+				if (i == number_of_players - 1 && hand_size == 1)
+					is_finished = true;
+			}
+
+			//display round results
+			display_round_results(socket);
+
+			//recieve eldest
+			eldest = recieve_eldest(socket);
+		}
+
+		//recieve final scores
+		display_final_scores(socket);
+	}
+	break;
+
+	default:
+		error("Unable to launch network play !");
+		break;
+	}
+}
+
+char ask_retry() {
+	char retry;
+	cout << "\nRetry? (y/n)" << endl;
+	
+	while (!cin  || cin >> retry) {
+		cin.ignore((numeric_limits<streamsize>::max)(), '\n');
+
+		switch (retry) {
+		case 'y': case 'n':
+			break;
+
+		default:
+			cout << "\nPlease enter a valid choice." << endl;
+			continue;
+		}
+
+		break;
+	}
+	
+	return retry;
 }
 
 void display_glbl_menu() {

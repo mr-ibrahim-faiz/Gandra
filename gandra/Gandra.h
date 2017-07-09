@@ -7,7 +7,13 @@
 void gandrac_same_screen();
 void gandrac_network();
 
-//display the menum
+//Defines the order by which the players play
+void ntwk_plyr(SOCKET, unsigned int);
+
+//Ask if a player want to retry game
+char ask_retry();
+
+//display menus
 
 void display_glbl_menu();
 void display_ntwk_menu();

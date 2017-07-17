@@ -9,8 +9,8 @@ class Player {
 public:
 	Player();
 
-	unsigned int get_player_number();
-	unsigned int get_score(vector<Card*>);
+	unsigned int get_player_number() const;
+	unsigned int get_score(vector<Card*>) const;
 	vector<Card*>& get_hand();
 	Card* play_card(const unsigned int);
 	void claim_cards(Card*);

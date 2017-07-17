@@ -8,11 +8,11 @@ Player::Player() {
 	player_number = next_player++;
 }
 
-unsigned int Player::get_player_number() {
+unsigned int Player::get_player_number() const {
 	return player_number;
 }
 
-unsigned int Player::get_score(vector<Card*> deck) {
+unsigned int Player::get_score(vector<Card*> deck) const {
 	unsigned int score {0};
 	for (unsigned int i = 0; i < deck.size() - 1; ++i) {
 		if (deck[i]->player_number == player_number)

@@ -12,27 +12,27 @@ Card::Card(Suit suit, Rank rank) {
 	player_number = 0;
 }
 
-Card::Rank Card::get_rank() {
+Card::Rank Card::get_rank() const {
 	return rank;
 }
 
-Card::Suit Card::get_suit() {
+Card::Suit Card::get_suit() const {
 	return suit;
 }
 
-char* Card::get_name() {
+char* Card::get_name()const {
 	return name;
 }
 
-double Card::get_value() {
+double Card::get_value() const {
 	return value;
 }
 
-bool Card::get_status() {
+bool Card::get_status() const {
 	return is_in_hand;
 }
 
-unsigned int Card::get_player_number() {
+unsigned int Card::get_player_number() const {
 	return player_number;
 }
 

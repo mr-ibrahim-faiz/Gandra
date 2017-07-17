@@ -31,9 +31,9 @@ void deal_cards(const vector<Card*>&, unsigned int&, const vector<Player*>, cons
 
 void display_cards_left(unsigned int, unsigned int);
 
-void display_card(Card*, Card::Suit, unsigned int, unsigned int);
-void display_cards(const vector<Card*>&, Card::Suit); 
-void display_cards(const vector<Card*>&, Card::Suit, unsigned int, unsigned int);
+void display_card(const Card*, const Card::Suit, unsigned int, unsigned int);
+void display_cards(const vector<Card*>&, const Card::Suit); 
+void display_cards(const vector<Card*>&, const Card::Suit, unsigned int, unsigned int);
 char* display_upcard(const unsigned int, const vector<Card*>&);
 
 void display_round(const unsigned int);
@@ -41,11 +41,11 @@ void display_player_turn(const unsigned int);
 
 void display_hand(const vector<Card*>&);
 void display_winner_card(const Card*);
-void display_round_winner(Card*);
+void display_round_winner(const Card*);
 
 unsigned int ask_choice(unsigned int);
-Card* compare_cards(const Card*, const Card*, Card::Suit);
-Card* round_winner_card(vector<Card*>, Card::Suit);
+Card* compare_cards(Card*, Card*, const Card::Suit);
+Card* round_winner_card(vector<Card*>, const Card::Suit);
 
 vector<unsigned int> get_scores(const vector<Player*>, const vector<Card*>);
 void display_final_scores(const vector<unsigned int>);
@@ -61,20 +61,20 @@ vector<unsigned int> compute_scores(vector<Card*>, unsigned int);
 
 //Data Transmission functions
 
-void send_card(SOCKET, char*);
-void send_hand_size(SOCKET, unsigned int);
-unsigned int recieve_hand_size(SOCKET);
-void send_cards(SOCKET, const vector<Card*>&);
-void send_cards(SOCKET, const vector<Card*>&, Card::Suit);
-void display_cards(SOCKET, unsigned int, unsigned int);
-void send_round_results(SOCKET, Card*);
-void display_round_results(SOCKET);
-void send_choice(SOCKET, unsigned int);
-unsigned int recieve_choice(SOCKET);
-void send_eldest(SOCKET, unsigned int);
-unsigned int recieve_eldest(SOCKET);
-void send_final_scores(SOCKET, const vector<unsigned int>);
-void display_final_scores(SOCKET);
+void send_card(const SOCKET&, const char*);
+void send_hand_size(const SOCKET&, unsigned int);
+unsigned int recieve_hand_size(const SOCKET&);
+void send_cards(const SOCKET&, const vector<Card*>&);
+void send_cards(const SOCKET&, const vector<Card*>&, const Card::Suit&);
+void display_cards(const SOCKET&, unsigned int, unsigned int);
+void send_round_results(const SOCKET&, const Card*);
+void display_round_results(const SOCKET&);
+void send_choice(const SOCKET&, unsigned int);
+unsigned int recieve_choice(const SOCKET&);
+void send_eldest(const SOCKET&, unsigned int);
+unsigned int recieve_eldest(const SOCKET&);
+void send_final_scores(const SOCKET&, const vector<unsigned int>&);
+void display_final_scores(const SOCKET&);
 
-void display_upcard(SOCKET);
-void display_hand(SOCKET);
+void display_upcard(const SOCKET&);
+void display_hand(const SOCKET&);

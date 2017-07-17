@@ -20,12 +20,12 @@ public:
 
 	Card(Suit, Rank);
 
-	Rank get_rank();
-	Suit get_suit();
-	char* get_name();
-	double get_value();
-	bool get_status();
-	unsigned int get_player_number();
+	Rank get_rank() const;
+	Suit get_suit() const;
+	char* get_name() const;
+	double get_value() const;
+	bool get_status() const;
+	unsigned int get_player_number() const;
 
 	void add_card(Player*);
 

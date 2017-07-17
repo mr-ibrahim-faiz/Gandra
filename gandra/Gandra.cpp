@@ -472,19 +472,19 @@ void display_cards_left(unsigned int round, unsigned int number_of_players) {
 		cout << "\nOnly " << number_of_players << " cards left." << endl;
 }
 
-void display_card(Card* card, Card::Suit suit, unsigned int player_number, unsigned int turn) {
+void display_card(const Card* card, const Card::Suit suit, unsigned int player_number, unsigned int turn) {
 	cout << *card << ((card->get_suit() == suit) ? "*" : "") << endl;
 	if (player_number == 2 && turn == 0)
 		cout << endl;
 }
 
-void display_cards(const vector<Card*>& cards, Card::Suit suit) {
+void display_cards(const vector<Card*>& cards, const Card::Suit suit) {
 	cout << endl;
 	for (Card* card : cards)
 		cout << *card << ((card->get_suit() == suit)? "*" : "") << endl;
 }
 
-void display_cards(const vector<Card*>& cards, Card::Suit suit, unsigned int player_number, unsigned int turn) {
+void display_cards(const vector<Card*>& cards, const Card::Suit suit, unsigned int player_number, unsigned int turn) {
 	if (player_number == 1 && turn == 1)
 		cout << endl;
 	for (Card* card : cards)
@@ -519,7 +519,7 @@ void display_winner_card(const Card* card) {
 	cout << "\n" << *card << " beats the other card(s)." << endl;
 }
 
-void display_round_winner(Card* card) {
+void display_round_winner(const Card* card) {
 	cout << "Player " << card->get_player_number() << " wins round !" << endl;
 }
 
@@ -534,7 +534,7 @@ unsigned int ask_choice(unsigned int hand_size) {
 	return choice;
 }
 
-Card* compare_cards(Card* card_a, Card* card_b, Card::Suit privileged_suit) {
+Card* compare_cards(Card* card_a, Card* card_b, const Card::Suit privileged_suit) {
 	if (card_a->get_suit() == privileged_suit) {
 		if (card_a->get_suit() != card_b->get_suit()) return card_a;
 		else {
@@ -552,7 +552,7 @@ Card* compare_cards(Card* card_a, Card* card_b, Card::Suit privileged_suit) {
 	return card_b;
 }
 
-Card* round_winner_card(vector<Card*> round_cards, Card::Suit privileged_suit) {
+Card* round_winner_card(vector<Card*> round_cards, const Card::Suit privileged_suit) {
 	unsigned int i {0};
 	Card* winner_card;
 
@@ -633,7 +633,7 @@ vector<unsigned int> compute_scores(vector<Card*> deck, unsigned int number_of_p
 
 //Data Transmission functions
 
-void send_card(SOCKET socket, char* card_name) {
+void send_card(const SOCKET& socket, const char* card_name) {
 	char sendbuf[DEFAULT_BUFLEN] = {0};
 	strcpy_s(sendbuf, card_name);
 
@@ -646,7 +646,7 @@ void send_card(SOCKET socket, char* card_name) {
 	}
 }
 
-void send_hand_size(SOCKET socket, unsigned int hand_size) {
+void send_hand_size(const SOCKET& socket, unsigned int hand_size) {
 	unsigned int isendResult {0};
 
 	isendResult = send(socket, (char*)&hand_size, sizeof(unsigned int), 0);
@@ -656,7 +656,7 @@ void send_hand_size(SOCKET socket, unsigned int hand_size) {
 	}
 }
 
-unsigned int recieve_hand_size(SOCKET socket) {
+unsigned int recieve_hand_size(const SOCKET& socket) {
 	unsigned int irecvResult {0};
 	unsigned int hand_size;
 
@@ -669,7 +669,7 @@ unsigned int recieve_hand_size(SOCKET socket) {
 	return hand_size;
 }
 
-void send_cards(SOCKET socket, const vector<Card*>& cards) {
+void send_cards(const SOCKET& socket, const vector<Card*>& cards) {
 	char sendbuf[DEFAULT_BUFLEN] = {0};
 	char *card_name;
 	unsigned int cards_size = cards.size();
@@ -692,7 +692,7 @@ void send_cards(SOCKET socket, const vector<Card*>& cards) {
 	}
 }
 
-void send_cards(SOCKET socket, const vector<Card*>& cards, Card::Suit suit) {
+void send_cards(const SOCKET& socket, const vector<Card*>& cards, const Card::Suit& suit) {
 	char sendbuf[DEFAULT_BUFLEN] = {0};
 	char *card_name;
 	unsigned int cards_size = cards.size();
@@ -717,7 +717,7 @@ void send_cards(SOCKET socket, const vector<Card*>& cards, Card::Suit suit) {
 	}
 }
 
-void display_cards(SOCKET socket, unsigned int player_number, unsigned int turn) {
+void display_cards(const SOCKET& socket, unsigned int player_number, unsigned int turn) {
 	char recvbuf[DEFAULT_BUFLEN] = {0};
 	unsigned int irecvResult {0};
 
@@ -747,7 +747,7 @@ void display_cards(SOCKET socket, unsigned int player_number, unsigned int turn)
 	cout << endl;
 }
 
-void send_round_results(SOCKET socket, Card* card) {
+void send_round_results(const SOCKET& socket, const Card* card) {
 	char sendbuf[DEFAULT_BUFLEN] = {0};
 	char* card_name = card->get_name();
 
@@ -770,7 +770,7 @@ void send_round_results(SOCKET socket, Card* card) {
 	}
 }
 
-void display_round_results(SOCKET socket) {
+void display_round_results(const SOCKET& socket) {
 	char recvbuf[DEFAULT_BUFLEN] = {0};
 	unsigned int irecvResult {0};
 
@@ -783,7 +783,7 @@ void display_round_results(SOCKET socket) {
 	cout << recvbuf << endl;
 }
 
-void send_choice(SOCKET socket, unsigned int hand_size) {
+void send_choice(const SOCKET& socket, unsigned int hand_size) {
 	unsigned int isendResult {0};
 	unsigned int choice = ask_choice(hand_size);
 
@@ -794,7 +794,7 @@ void send_choice(SOCKET socket, unsigned int hand_size) {
 	}
 }
 
-unsigned int recieve_choice(SOCKET socket) {
+unsigned int recieve_choice(const SOCKET& socket) {
 	unsigned int irecvResult {0};
 	unsigned int choice;
 
@@ -807,7 +807,7 @@ unsigned int recieve_choice(SOCKET socket) {
 	return choice;
 }
 
-void send_eldest(SOCKET socket, unsigned int eldest) {
+void send_eldest(const SOCKET& socket, unsigned int eldest) {
 	unsigned int isendResult = send(socket, (char*)&eldest, sizeof(unsigned int), 0);
 	if (isendResult == SOCKET_ERROR) {
 		error("Unable to send eldest.");
@@ -815,7 +815,7 @@ void send_eldest(SOCKET socket, unsigned int eldest) {
 	}
 }
 
-unsigned int recieve_eldest(SOCKET socket) {
+unsigned int recieve_eldest(const SOCKET& socket) {
 	unsigned int eldest;
 	unsigned int irecvResult;
 
@@ -828,7 +828,7 @@ unsigned int recieve_eldest(SOCKET socket) {
 	return eldest;
 }
 
-void send_final_scores(SOCKET socket, const vector<unsigned int> scores) {
+void send_final_scores(const SOCKET& socket, const vector<unsigned int>& scores) {
 	unsigned int sendbuf[2];
 	for (unsigned int i = 0; i < scores.size(); ++i)
 		sendbuf[i] = scores[i];
@@ -839,7 +839,7 @@ void send_final_scores(SOCKET socket, const vector<unsigned int> scores) {
 	}
 }
 
-void display_final_scores(SOCKET socket) {
+void display_final_scores(const SOCKET& socket) {
 	unsigned int scores[2];
 	unsigned int irecvResult = recv(socket, (char*)scores, sizeof(int) * 2, MSG_WAITALL);
 	if (irecvResult == SOCKET_ERROR) {
@@ -857,7 +857,7 @@ void display_final_scores(SOCKET socket) {
 		cout << "\nPlayer " << ((scores[0] > scores[1]) ? 1 : 2) << " wins game !" << endl;
 }
 
-void display_upcard(SOCKET socket) {
+void display_upcard(const SOCKET& socket) {
 	char recvbuf[DEFAULT_BUFLEN];
 	unsigned int irecvResult;
 
@@ -871,7 +871,7 @@ void display_upcard(SOCKET socket) {
 	cout << "\nUpcard: " << upcard_name << " !" << endl;
 }
 
-void display_hand(SOCKET socket) {
+void display_hand(const SOCKET& socket) {
 	char recvbuf[DEFAULT_BUFLEN] = {0};
 	unsigned int irecvResult {0};
 

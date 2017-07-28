@@ -14,7 +14,6 @@ using std::numeric_limits;
 
 int main()
 try {
-
 	char choice {'?'};
 
 	display_glbl_menu();

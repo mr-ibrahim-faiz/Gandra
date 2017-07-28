@@ -12,6 +12,25 @@ Card::Card(Suit suit, Rank rank) {
 	player_number = 0;
 }
 
+Card::~Card(){}
+
+Card::Card(Card&& other) {
+	*this = move(other);
+}
+
+Card& Card::operator=(Card&& other) {
+	if (this != &other) {
+		suit = move(other.suit);
+		rank = move(other.rank);
+		name = move(other.name);
+		value = move(other.value);
+		is_in_hand = move(other.is_in_hand);
+		is_played = move(other.is_played);
+		player_number = move(other.player_number);
+	}
+	return *this;
+}
+
 Card::Rank Card::get_rank() const {
 	return rank;
 }

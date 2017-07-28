@@ -4,6 +4,7 @@
 using std::vector;
 
 #include<iostream>
+using std::move;
 using std::ostream;
 
 class Player;
@@ -18,7 +19,11 @@ public:
 		Ace, King, Queen, Jack, Three, Four, Five, Six, Seven
 	};
 
-	Card(Suit, Rank);
+	explicit Card(Suit, Rank);
+	~Card();
+
+	Card(Card&&);
+	Card& operator=(Card&&);
 
 	Rank get_rank() const;
 	Suit get_suit() const;

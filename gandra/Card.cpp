@@ -2,17 +2,21 @@
 #include "Player.h"
 #include "Errors.h"
 
-Card::Card(Suit suit, Rank rank) {
-	this->suit = suit;
-	this->rank = rank;
+#define NAMELEN 24
+
+Card::Card(Suit suit, Rank rank)
+	: suit(suit), rank(rank), name(new char[NAMELEN])
+	, is_in_hand(false), is_played(false)
+	, player_number(false)
+{
 	set_name();
 	set_value();
-	is_in_hand = false;
-	is_played = false;
-	player_number = 0;
 }
 
-Card::~Card(){}
+Card::~Card(){
+	if (name != nullptr)
+		delete[] name;
+}
 
 Card::Card(Card&& other) {
 	*this = move(other);
@@ -27,6 +31,8 @@ Card& Card::operator=(Card&& other) {
 		is_in_hand = move(other.is_in_hand);
 		is_played = move(other.is_played);
 		player_number = move(other.player_number);
+
+		other.name = nullptr;
 	}
 	return *this;
 }

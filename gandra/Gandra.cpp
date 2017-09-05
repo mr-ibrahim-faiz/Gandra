@@ -102,7 +102,12 @@ void gandrac_network() {
 	display_ntwk_menu();
 
 	while (cin >> choice) {
-		cin.ignore((numeric_limits<streamsize>::max)(), '\n');
+		char next = cin.peek();
+
+		if (next != '\n') {
+			choice = '?';
+			cin.ignore((numeric_limits<streamsize>::max)(), '\n');
+		}
 
 		switch (choice) {
 		case '1':

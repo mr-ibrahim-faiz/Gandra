@@ -4,8 +4,25 @@
 
 unsigned int Player::next_player {1};
 
+// simple constructor
 Player::Player() {
 	player_number = next_player++;
+}
+
+
+// free memory block that the pointers stored in vector are pointing to
+template<typename T>
+void cleanup(vector<T*>& vec)
+// the stored pointers should point to a block of memory allocated
+{
+	for (T* t : vec)
+		if (t != nullptr)
+			delete t;
+}
+
+// destructor
+Player::~Player() {
+	cleanup(hand);
 }
 
 unsigned int Player::get_player_number() const {

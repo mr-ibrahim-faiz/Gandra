@@ -5,7 +5,7 @@
 #define NAMELEN 24
 
 Card::Card(Suit suit, Rank rank)
-	: suit(suit), rank(rank), name(new char[NAMELEN])
+	: suit(suit), rank(rank), name(nullptr)
 	, is_in_hand(false), is_played(false)
 	, player_number(false)
 {
@@ -87,144 +87,144 @@ void Card::set_name() {
 	case Ace:
 		switch (suit) {
 		case Clubs:
-			name = "Ace of Clubs";
+			name = new char[NAMELEN] { "Ace of Clubs" };
 			break;
 		case Diamonds:
-			name = "Ace of Diamonds";
+			name = new char[NAMELEN] { "Ace of Diamonds" };
 			break;
 		case Hearts:
-			name = "Ace of Hearts";
+			name = new char[NAMELEN] { "Ace of Hearts" };
 			break;
 		case Spades:
-			name = "Ace of Spades";
+			name = new char[NAMELEN] { "Ace of Spades" };
 			break;
 		}
 		break;
 	case King:
 		switch (suit) {
 		case Clubs:
-			name = "King of Clubs";
+			name = new char[NAMELEN] { "King of Clubs" };
 			break;
 		case Diamonds:
-			name = "King of Diamonds";
+			name = new char[NAMELEN] { "King of Diamonds" };
 			break;
 		case Hearts:
-			name = "King of Hearts";
+			name = new char[NAMELEN] { "King of Hearts" };
 			break;
 		case Spades:
-			name = "King of Spades";
+			name = new char[NAMELEN] { "King of Spades" };
 			break;
 		}
 		break;
 	case Queen:
 		switch (suit) {
 		case Clubs:
-			name = "Queen of Clubs";
+			name = new char[NAMELEN] { "Queen of Clubs" };
 			break;
 		case Diamonds:
-			name = "Queen of Diamonds";
+			name = new char[NAMELEN] { "Queen of Diamonds" };
 			break;
 		case Hearts:
-			name = "Queen of Hearts";
+			name = new char[NAMELEN] { "Queen of Hearts" };
 			break;
 		case Spades:
-			name = "Queen of Spades";
+			name = new char[NAMELEN] { "Queen of Spades" };
 			break;
 		}
 		break;
 	case Jack:
 		switch (suit) {
 		case Clubs:
-			name = "Jack of Clubs";
+			name = new char[NAMELEN] { "Jack of Clubs" };
 			break;
 		case Diamonds:
-			name = "Jack of Diamonds";
+			name = new char[NAMELEN] { "Jack of Diamonds" };
 			break;
 		case Hearts:
-			name = "Jack of Hearts";
+			name = new char[NAMELEN] { "Jack of Hearts" };
 			break;
 		case Spades:
-			name = "Jack of Spades";
+			name = new char[NAMELEN] { "Jack of Spades" };
 			break;
 		}
 		break;
 	case Seven:
 		switch (suit) {
 		case Clubs:
-			name = "Seven of Clubs";
+			name = new char[NAMELEN] { "Seven of Clubs" };
 			break;
 		case Diamonds:
-			name = "Seven of Diamonds";
+			name = new char[NAMELEN] { "Seven of Diamonds" };
 			break;
 		case Hearts:
-			name = "Seven of Hearts";
+			name = new char[NAMELEN] { "Seven of Hearts" };
 			break;
 		case Spades:
-			name = "Seven of Spades";
+			name = new char[NAMELEN] { "Seven of Spades" };
 			break;
 		}
 		break;
 	case Three:
 		switch (suit) {
 		case Clubs:
-			name = "Three of Clubs";
+			name = new char[NAMELEN] { "Three of Clubs" };
 			break;
 		case Diamonds:
-			name = "Three of Diamonds";
+			name = new char[NAMELEN] { "Three of Diamonds" };
 			break;
 		case Hearts:
-			name = "Three of Hearts";
+			name = new char[NAMELEN] { "Three of Hearts" };
 			break;
 		case Spades:
-			name = "Three of Spades";
+			name = new char[NAMELEN] { "Three of Spades" };
 			break;
 		}
 		break;
 	case Four:
 		switch (suit) {
 		case Clubs:
-			name = "Four of Clubs";
+			name = new char[NAMELEN] { "Four of Clubs" };
 			break;
 		case Diamonds:
-			name = "Four of Diamonds";
+			name = new char[NAMELEN] { "Four of Diamonds" };
 			break;
 		case Hearts:
-			name = "Four of Hearts";
+			name = new char[NAMELEN] { "Four of Hearts" };
 			break;
 		case Spades:
-			name = "Four of Spades";
+			name = new char[NAMELEN] { "Four of Spades" };
 			break;
 		}
 		break;
 	case Five:
 		switch (suit) {
 		case Clubs:
-			name = "Five of Clubs";
+			name = new char[NAMELEN] { "Five of Clubs" };
 			break;
 		case Diamonds:
-			name = "Five of Diamonds";
+			name = new char[NAMELEN] { "Five of Diamonds" };
 			break;
 		case Hearts:
-			name = "Five of Hearts";
+			name = new char[NAMELEN] { "Five of Hearts" };
 			break;
 		case Spades:
-			name = "Five of Spades";
+			name = new char[NAMELEN] { "Five of Spades" };
 			break;
 		}
 		break;
 	case Six:
 		switch (suit) {
 		case Clubs:
-			name = "Six of Clubs";
+			name = new char[NAMELEN] { "Six of Clubs" };
 			break;
 		case Diamonds:
-			name = "Six of Diamonds";
+			name = new char[NAMELEN] { "Six of Diamonds" };
 			break;
 		case Hearts:
-			name = "Six of Hearts";
+			name = new char[NAMELEN] { "Six of Hearts" };
 			break;
 		case Spades:
-			name = "Six of Spades";
+			name = new char[NAMELEN] { "Six of Spades" };
 			break;
 		}
 		break;

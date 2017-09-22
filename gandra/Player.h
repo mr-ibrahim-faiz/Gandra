@@ -8,7 +8,7 @@ class Card;
 class Player {
 public:
 	Player();
-
+	~Player();
 	unsigned int get_player_number() const;
 	unsigned int get_score(vector<Card*>) const;
 	vector<Card*>& get_hand();

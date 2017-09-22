@@ -20,6 +20,17 @@ using std::string;
 
 #include "Errors.h"
 
+// free memory block that the pointers stored in vector are pointing to
+template<typename T>
+void cleanup(vector<T*>& vec)
+// the stored pointers should point to a block of memory allocated
+{
+	for (T* t : vec) {
+		if (t != nullptr)
+			delete t;
+	}
+}
+
 void gandrac_same_screen() {
 	//Get number of players
 	unsigned int number_of_players = ask_number_of_players(2, 4);
@@ -94,6 +105,11 @@ void gandrac_same_screen() {
 	vector<unsigned int> scores = get_scores(players, deck);
 	display_final_scores(scores);
 	display_game_winner(scores);
+
+	// free memory
+	cleanup(players);
+	deck.resize(deck.size() - 1); // this is needed so the memory of the upcard isn't freed multiple times
+	cleanup(deck);
 }
 
 void gandrac_network() {
@@ -287,6 +303,11 @@ void ntwk_plyr(SOCKET socket, unsigned int player_number) {
 
 		//send final scores
 		send_final_scores(socket, scores);
+
+		// free memory
+		cleanup(players);
+		deck.resize(deck.size() - 1); // this is needed so the memory of the upcard isn't freed multiple times
+		cleanup(deck);
 	}
 	break;
 
